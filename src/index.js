@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import CitiesContextProvider from "./contexts/citiesContext";
+import SettingsContextProvider from "./contexts/settingContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
     <CitiesContextProvider>
-      <App />
+      <SettingsContextProvider>
+        <App />
+      </SettingsContextProvider>
     </CitiesContextProvider>
   </React.StrictMode>
 );
