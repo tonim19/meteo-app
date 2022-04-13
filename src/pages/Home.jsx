@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import citiesData from "../data/gradovi";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import { CitiesContext } from "../contexts/citiesContext";
+import CardList from "../components/CardList";
 
 function Home() {
-  const [cities, setCities] = useState(citiesData);
+  const { cities } = useContext(CitiesContext);
   const [searchField, setSearchField] = useState("");
   const [filteredCities, setFilteredCities] = useState([
-    { city: "", lat: "", lng: "" },
+    { city: "", lat: "", lng: "", isFavorite: false },
   ]);
 
   useEffect(() => {
     const filtered = cities
-      .filter((city) =>
+      ?.filter((city) =>
         city.city.toLowerCase().includes(searchField.toLowerCase())
       )
       .slice(0, 5);
@@ -27,16 +27,7 @@ function Home() {
     <>
       <h1>Meteo App</h1>
       <input type="search" value={searchField} onChange={handleChange} />
-      {filteredCities.map((city, index) => {
-        return (
-          <div key={index} className="card">
-            <h2 className="card-title">{city.city}</h2>
-            <div className="star">
-              {city?.isFavorite ? <FaStar /> : <FaRegStar />}
-            </div>
-          </div>
-        );
-      })}
+      <CardList filteredCities={filteredCities} />
     </>
   );
 }
