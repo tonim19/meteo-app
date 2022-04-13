@@ -25,10 +25,13 @@ function CardList({ filteredCities }) {
   return (
     <>
       {filteredCities?.map((cityObj, index) => {
-        const { city, isFavorite } = cityObj;
+        const { city, lat, lng, isFavorite } = cityObj;
         return (
           <div key={index} className="card">
-            <div className="card-title" onClick={() => navigate("/weather")}>
+            <div
+              className="card-title"
+              onClick={() => navigate(`/weather/${lat}/${lng}`)}
+            >
               {city}
             </div>
             <div className="star" onClick={() => handleFavoriteChange(cityObj)}>
