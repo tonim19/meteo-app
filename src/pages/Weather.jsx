@@ -5,6 +5,15 @@ import { FaCaretDown } from "react-icons/fa";
 import { dayVariables, hrVariables } from "../utils/apiVariables";
 import { SettingsContext } from "../contexts/settingContext";
 import CheckboxSection from "../components/CheckboxSection";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 function Weather() {
   const { cities } = useContext(CitiesContext);
@@ -25,6 +34,10 @@ function Weather() {
   const [hourlyVariables, setHourlyVariables] = useState(hrVariables);
 
   const [dailyVariables, setDailyVariables] = useState(dayVariables);
+
+  const [graphData, setGraphData] = useState([]);
+
+  const [checkboxNames, setCheckboxNames] = useState([]);
 
   useEffect(() => {
     const filtered = cities?.filter((city) =>
@@ -55,6 +68,7 @@ function Weather() {
       }
       return acc;
     }, []);
+    setCheckboxNames(newArr);
     url += newArr.join(",");
 
     for (let setting in settings) {
@@ -67,10 +81,32 @@ function Weather() {
     setWeatherData(data);
   };
 
+  useEffect(() => {
+    let newArr = [];
+    if (view === "hourly") {
+      for (let i = 0; i < weatherData?.hourly?.time?.length; i++) {
+        let newObj = {};
+        for (let item in weatherData?.hourly) {
+          newObj = { ...newObj, [item]: weatherData?.hourly?.[item][i] };
+        }
+        newArr.push(newObj);
+      }
+    } else if (view === "daily") {
+      for (let i = 0; i < weatherData?.daily?.time?.length; i++) {
+        let newObj = {};
+        for (let item in weatherData?.daily) {
+          newObj = { ...newObj, [item]: weatherData?.daily?.[item][i] };
+        }
+        newArr.push(newObj);
+      }
+    }
+    setGraphData(newArr);
+  }, [weatherData, view]);
+
   return (
     <>
       <h1>Weather for {cityObj?.city}</h1>
-      <span className="select">
+      <section className="select">
         <select value={view} onChange={handleChange}>
           <option value="">Choose</option>
           <option value="daily">Daily View</option>
@@ -93,7 +129,31 @@ function Weather() {
             fetchData={fetchData}
           />
         )}
-      </span>
+      </section>
+      <LineChart
+        width={730}
+        height={250}
+        data={graphData}
+        margin={{ top: 25, right: 30, left: 20, bottom: 5 }}
+      >
+        <CartesianGrid verticalPoints={[3]} />
+        <XAxis dataKey="time" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        {checkboxNames.map((checkbox, index) => {
+          const randomColor =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
+          return (
+            <Line
+              key={index}
+              type="monotone"
+              dataKey={checkbox}
+              stroke={randomColor}
+            />
+          );
+        })}
+      </LineChart>
     </>
   );
 }
