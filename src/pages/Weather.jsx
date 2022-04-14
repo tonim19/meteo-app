@@ -3,10 +3,15 @@ import { useParams } from "react-router-dom";
 import { CitiesContext } from "../contexts/citiesContext";
 import { FaCaretDown } from "react-icons/fa";
 import { dayVariables, hrVariables } from "../utils/apiVariables";
+import { SettingsContext } from "../contexts/settingContext";
+import CheckboxSection from "../components/CheckboxSection";
 
 function Weather() {
   const { cities } = useContext(CitiesContext);
+  const { settings } = useContext(SettingsContext);
   const { lat, lng } = useParams();
+
+  const [weatherData, setWeatherData] = useState(null);
 
   const [cityObj, setCityObj] = useState({
     city: "",
@@ -35,38 +40,6 @@ function Weather() {
     setView(e.target.value);
   };
 
-  const handleDailyChange = (id) => {
-    const daily = dailyVariables.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          value: !item.value,
-        };
-      } else {
-        return item;
-      }
-    });
-
-    setDailyVariables(daily);
-  };
-
-  const handleHourlyChange = (id) => {
-    const hourly = hourlyVariables.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          value: !item.value,
-        };
-      } else {
-        return item;
-      }
-    });
-
-    setHourlyVariables(hourly);
-
-    fetchData(hourly);
-  };
-
   const fetchData = async (arr) => {
     let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}`;
 
@@ -76,13 +49,22 @@ function Weather() {
       url += "&daily=";
     }
 
-    const newArr = arr.filter((item) => item.value).map((item) => item.name);
+    const newArr = arr.reduce((acc, curr) => {
+      if (curr.value) {
+        acc.push(curr.name);
+      }
+      return acc;
+    }, []);
     url += newArr.join(",");
+
+    for (let setting in settings) {
+      url += `&${setting}=${settings[setting]}`;
+    }
 
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log(data);
+    setWeatherData(data);
   };
 
   return (
@@ -96,40 +78,20 @@ function Weather() {
         </select>
         <FaCaretDown />
         {view === "daily" && (
-          <section className="daily">
-            <h2>Daily Weather Variables</h2>
-            {dailyVariables?.map(({ id, name, value }) => {
-              return (
-                <div key={id}>
-                  <input
-                    type="checkbox"
-                    id={name}
-                    checked={value}
-                    onChange={() => handleDailyChange(id)}
-                  />
-                  <label htmlFor={name}>{name}</label>
-                </div>
-              );
-            })}
-          </section>
+          <CheckboxSection
+            name="Daily"
+            variables={dailyVariables}
+            setVariables={setDailyVariables}
+            fetchData={fetchData}
+          />
         )}
         {view === "hourly" && (
-          <section className="hourly">
-            <h2>Hourly Weather Variables</h2>
-            {hourlyVariables?.map(({ id, name, value }) => {
-              return (
-                <div key={id}>
-                  <input
-                    type="checkbox"
-                    id={name}
-                    checked={value}
-                    onChange={() => handleHourlyChange(id)}
-                  />
-                  <label htmlFor={name}>{name}</label>
-                </div>
-              );
-            })}
-          </section>
+          <CheckboxSection
+            name="Hourly"
+            variables={hourlyVariables}
+            setVariables={setHourlyVariables}
+            fetchData={fetchData}
+          />
         )}
       </span>
     </>

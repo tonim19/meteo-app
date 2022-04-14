@@ -1,14 +1,7 @@
 import { createContext, useEffect, useState } from "react";
+import defaultSettings from "../utils/defaultSettings";
 
 export const SettingsContext = createContext();
-
-const initialData = {
-  temperature_unit: "celsius",
-  windspeed_unit: "kmh",
-  precipitation_unit: "mm",
-  timezone: "UTC",
-  past_days: "0",
-};
 
 const SettingsContextProvider = ({ children }) => {
   const [settings, setSettings] = useState(null);
@@ -17,7 +10,7 @@ const SettingsContextProvider = ({ children }) => {
     const hasSettings = localStorage.getItem("settings");
 
     if (!hasSettings) {
-      localStorage.setItem("settings", JSON.stringify(initialData));
+      localStorage.setItem("settings", JSON.stringify(defaultSettings));
     } else if (hasSettings && !settings) {
       setSettings(JSON.parse(hasSettings));
     } else {
