@@ -18,16 +18,11 @@ import {
 function Weather() {
   const { cities } = useContext(CitiesContext);
   const { settings } = useContext(SettingsContext);
-  const { lat, lng } = useParams();
+  const { cityName, lat, lng } = useParams();
 
-  const [weatherData, setWeatherData] = useState(null);
+  const [weatherData, setWeatherData] = useState({});
 
-  const [cityObj, setCityObj] = useState({
-    city: "",
-    lat: "",
-    lng: "",
-    isFavorite: "",
-  });
+  const [cityObj, setCityObj] = useState({});
 
   const [view, setView] = useState("");
 
@@ -41,13 +36,17 @@ function Weather() {
 
   useEffect(() => {
     const filtered = cities?.filter((city) =>
-      city.lat === lat && city.lng === lng ? true : false
+      city.lat === lat &&
+      city.lng === lng &&
+      city.city.toLowerCase() === cityName
+        ? true
+        : false
     );
 
     if (filtered) {
       setCityObj(filtered[0]);
     }
-  }, [cities, lat, lng]);
+  }, [cities, lat, lng, cityName]);
 
   const handleChange = (e) => {
     setView(e.target.value);

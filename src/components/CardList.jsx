@@ -30,7 +30,9 @@ function CardList({ filteredCities }) {
           <div key={index} className="card">
             <div
               className="card-title"
-              onClick={() => navigate(`/weather/${lat}/${lng}`)}
+              onClick={() =>
+                navigate(`/weather/${city.toLowerCase()}/${lat}/${lng}`)
+              }
             >
               {city}
             </div>
