@@ -9,15 +9,18 @@ function SelectInput({ name, variables, value }) {
   };
 
   return (
-    <select name={name} value={value} onChange={handleChange}>
-      {variables?.map(({ id, value, label }) => {
-        return (
-          <option key={id} value={value}>
-            {label}
-          </option>
-        );
-      })}
-    </select>
+    <div className="custom-select">
+      <select name={name} value={value} onChange={handleChange}>
+        {variables?.map(({ id, value, label }) => {
+          return (
+            <option key={id} value={value}>
+              {label}
+            </option>
+          );
+        })}
+      </select>
+      <span className="custom-arrow"></span>
+    </div>
   );
 }
 

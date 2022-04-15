@@ -53,26 +53,24 @@ function Settings() {
         <RadioButton name="precipitation_unit" value="inch" label="Inch" />
       </div>
       <p>Timezone</p>
-      <div className="timezone">
-        <SelectInput
-          name="timezone"
-          variables={timezoneVariables}
-          value={settings?.timezone}
-        />
-      </div>
+      <SelectInput
+        name="timezone"
+        variables={timezoneVariables}
+        value={settings?.timezone}
+      />
       <p>Past Days</p>
-      <div className="pastdays">
-        <SelectInput
-          name="past_days"
-          variables={pastDaysVariables}
-          value={settings?.past_days}
-        />
-      </div>
+      <SelectInput
+        name="past_days"
+        variables={pastDaysVariables}
+        value={settings?.past_days}
+      />
       <div className="buttons">
-        <button onClick={() => setSettings(defaultSettings)}>
+        <button className="btn" onClick={() => setSettings(defaultSettings)}>
           Revert settings to default
         </button>
-        <button onClick={deleteFavorites}>Delete favourites</button>
+        <button className="btn" onClick={deleteFavorites}>
+          Delete favourites
+        </button>
       </div>
     </section>
   );

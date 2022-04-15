@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CitiesContext } from "../contexts/citiesContext";
-import { FaCaretDown } from "react-icons/fa";
 import { dayVariables, hrVariables } from "../utils/apiVariables";
 import { SettingsContext } from "../contexts/settingContext";
 import CheckboxSection from "../components/CheckboxSection";
@@ -10,6 +9,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -104,14 +104,16 @@ function Weather() {
 
   return (
     <>
-      <h1>Weather for {cityObj?.city}</h1>
+      <h1 className="weather-title">Weather for {cityObj?.city}</h1>
       <section className="select">
-        <select value={view} onChange={handleChange}>
-          <option value="">Choose</option>
-          <option value="daily">Daily View</option>
-          <option value="hourly">Hourly View</option>
-        </select>
-        <FaCaretDown />
+        <div className="custom-select">
+          <select value={view} onChange={handleChange}>
+            <option value="">Choose</option>
+            <option value="daily">Daily View</option>
+            <option value="hourly">Hourly View</option>
+          </select>
+          <span className="custom-arrow"></span>
+        </div>
         {view === "daily" && (
           <CheckboxSection
             name="Daily"
@@ -129,30 +131,31 @@ function Weather() {
           />
         )}
       </section>
-      <LineChart
-        width={730}
-        height={250}
-        data={graphData}
-        margin={{ top: 25, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid verticalPoints={[3]} />
-        <XAxis dataKey="time" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {checkboxNames.map((checkbox, index) => {
-          const randomColor =
-            "#" + Math.floor(Math.random() * 16777215).toString(16);
-          return (
-            <Line
-              key={index}
-              type="monotone"
-              dataKey={checkbox}
-              stroke={randomColor}
-            />
-          );
-        })}
-      </LineChart>
+      <ResponsiveContainer width="99%" aspect={3}>
+        <LineChart
+          data={graphData}
+          margin={{ top: 10, right: 5, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid verticalPoints={[3]} />
+          <XAxis dataKey="time" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          {checkboxNames.map((checkbox, index) => {
+            const randomColor =
+              "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+            return (
+              <Line
+                key={index}
+                type="monotone"
+                dataKey={checkbox}
+                stroke={randomColor}
+              />
+            );
+          })}
+        </LineChart>
+      </ResponsiveContainer>
     </>
   );
 }

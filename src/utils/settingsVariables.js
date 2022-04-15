@@ -6,7 +6,7 @@ export const timezoneVariables = [
   },
   {
     id: 1,
-    value: "America%2FNewYork",
+    value: "America%2FNew_York",
     label: "America/NewYork",
   },
   {
