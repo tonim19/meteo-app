@@ -34,24 +34,6 @@ function Weather() {
 
   const [checkboxNames, setCheckboxNames] = useState([]);
 
-  useEffect(() => {
-    const filtered = cities?.filter((city) =>
-      city.lat === lat &&
-      city.lng === lng &&
-      city.city.toLowerCase() === cityName
-        ? true
-        : false
-    );
-
-    if (filtered) {
-      setCityObj(filtered[0]);
-    }
-  }, [cities, lat, lng, cityName]);
-
-  const handleChange = (e) => {
-    setView(e.target.value);
-  };
-
   const fetchData = async (arr) => {
     let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}`;
 
@@ -81,6 +63,20 @@ function Weather() {
   };
 
   useEffect(() => {
+    const filtered = cities?.filter((city) =>
+      city.lat === lat &&
+      city.lng === lng &&
+      city.city.toLowerCase() === cityName
+        ? true
+        : false
+    );
+
+    if (filtered) {
+      setCityObj(filtered[0]);
+    }
+  }, [cities, lat, lng, cityName]);
+
+  useEffect(() => {
     let newArr = [];
     if (view === "hourly") {
       for (let i = 0; i < weatherData?.hourly?.time?.length; i++) {
@@ -104,10 +100,10 @@ function Weather() {
 
   return (
     <>
-      <h1 className="weather-title">Weather for {cityObj?.city}</h1>
+      <h1 className="weather-title">Meterologic data for {cityObj?.city}</h1>
       <section className="select">
         <div className="custom-select">
-          <select value={view} onChange={handleChange}>
+          <select value={view} onChange={(e) => setView(e.target.value)}>
             <option value="">Choose</option>
             <option value="daily">Daily View</option>
             <option value="hourly">Hourly View</option>

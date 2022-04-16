@@ -35,6 +35,10 @@ li {
   list-style: none;
 }
 
+li:hover {
+  background: rgb(49, 84, 255);
+}
+
 .btn {
   cursor: pointer;
   font-size: 0.8rem;
@@ -45,6 +49,12 @@ li {
   border-radius: 5px;
   background: #fff;
   color: red;
+  transition: all 0.1s ease-in-out;
+}
+
+.btn:hover {
+  background-color: red;
+  color: #fff;
 }
 
 input[type="checkbox"] {
@@ -85,11 +95,21 @@ input[type="search"] {
   color: #fff;
   font-size: 1.3rem;
   border-radius: 8px;
+  transition: all 0.1s ease-in;
+}
+
+.card:hover {
+  opacity: 0.8;
 }
 
 .card .card-title {
+  cursor: pointer;
   padding: 0.7rem 0;
   width: 100%;
+}
+
+.star {
+  cursor: pointer;
 }
 
 .weather-title {
@@ -108,6 +128,7 @@ section.select {
 }
 
 .custom-select select {
+  cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   font-size: 1.1rem;
   padding: 0.8em 4em 0.8em 1.5em;
@@ -159,7 +180,13 @@ section.select {
   margin-left: 1.5rem;
 }
 
-@media (min-width: 660px) {
+@media (min-width: 570px) {
+  .checkbox-section .checkboxes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 850px) {
   .checkbox-section .checkboxes {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -196,7 +223,8 @@ input[type="radio"] {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
+  min-height: 100vh;
+  padding-bottom: 140px;
   z-index: 10;
   width: 300px;
   color: #fff;
@@ -217,14 +245,20 @@ input[type="radio"] {
 
 .nav-footer {
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   left: 20px;
 }
 
 .nav-home {
   position: absolute;
+  bottom: 40px;
   left: 20px;
-  bottom: 60px;
+}
+
+.nav-footer:hover,
+.nav-home:hover {
+  background: none;
+  color: #ddd;
 }
 
 .active {

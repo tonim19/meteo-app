@@ -18,16 +18,17 @@ function CheckboxSection({ name, variables, setVariables, fetchData }) {
     <section className="checkbox-section">
       <h2>{name} Weather Variables</h2>
       <div className="checkboxes">
-        {variables?.map(({ id, name, value }) => {
+        {variables?.map(({ id, value, label }) => {
           return (
             <div key={id} className="checkbox-wrapper">
-              <input
-                type="checkbox"
-                id={name}
-                checked={value}
-                onChange={() => handleChange(id)}
-              />
-              <label htmlFor={name}>{name}</label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={value}
+                  onChange={() => handleChange(id)}
+                />
+                {label}
+              </label>
             </div>
           );
         })}
