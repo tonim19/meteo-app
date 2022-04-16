@@ -39,6 +39,12 @@ li:hover {
   background: rgb(49, 84, 255);
 }
 
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .btn {
   cursor: pointer;
   font-size: 0.8rem;
@@ -108,7 +114,7 @@ input[type="search"] {
   width: 100%;
 }
 
-.star {
+.toggle {
   cursor: pointer;
 }
 
@@ -231,6 +237,18 @@ input[type="radio"] {
   background: linear-gradient(0deg, rgb(119, 159, 253), rgb(33, 99, 251));
 }
 
+.nav-filter {
+  text-align: center;
+}
+
+.nav-filter span {
+  cursor: pointer;
+}
+
+.nav-filter span:hover {
+  color: #b0b3e8;
+}
+
 .nav-close {
   cursor: pointer;
   position: absolute;
@@ -238,9 +256,16 @@ input[type="radio"] {
   right: 5px;
 }
 
+.nav-link .toggle {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .nav-title {
+  text-align: left;
+  width: 100%;
   cursor: pointer;
-  padding: 1rem;
+  margin: 1rem;
 }
 
 .nav-footer {
@@ -258,7 +283,7 @@ input[type="radio"] {
 .nav-footer:hover,
 .nav-home:hover {
   background: none;
-  color: #ddd;
+  color: #b0b3e8;
 }
 
 .active {

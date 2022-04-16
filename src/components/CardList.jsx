@@ -4,24 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { CitiesContext } from "../contexts/citiesContext";
 
 function CardList({ filteredCities }) {
-  const { cities, setCities } = useContext(CitiesContext);
+  const { handleFavoriteChange } = useContext(CitiesContext);
 
   const navigate = useNavigate();
 
-  const handleFavoriteChange = (cityObj) => {
-    const newCitiesArr = cities.map((item) => {
-      if (item === cityObj) {
-        return {
-          ...item,
-          isFavorite: !item.isFavorite,
-        };
-      } else {
-        return item;
-      }
-    });
-
-    setCities(newCitiesArr);
-  };
   return (
     <>
       {filteredCities?.map((cityObj, index) => {
@@ -36,7 +22,10 @@ function CardList({ filteredCities }) {
             >
               {city}
             </div>
-            <div className="star" onClick={() => handleFavoriteChange(cityObj)}>
+            <div
+              className="toggle"
+              onClick={() => handleFavoriteChange(cityObj)}
+            >
               {isFavorite ? <FaStar /> : <FaRegStar />}
             </div>
           </div>

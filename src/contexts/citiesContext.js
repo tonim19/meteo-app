@@ -6,6 +6,21 @@ export const CitiesContext = createContext();
 const CitiesContextProvider = ({ children }) => {
   const [cities, setCities] = useState(null);
 
+  const handleFavoriteChange = (cityObj) => {
+    const newCitiesArr = cities.map((item) => {
+      if (item === cityObj) {
+        return {
+          ...item,
+          isFavorite: !item.isFavorite,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    setCities(newCitiesArr);
+  };
+
   useEffect(() => {
     const hasCities = localStorage.getItem("cities");
 
@@ -26,7 +41,7 @@ const CitiesContextProvider = ({ children }) => {
   }, [cities]);
 
   return (
-    <CitiesContext.Provider value={{ cities, setCities }}>
+    <CitiesContext.Provider value={{ cities, setCities, handleFavoriteChange }}>
       {children}
     </CitiesContext.Provider>
   );
